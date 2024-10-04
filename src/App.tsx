@@ -1,26 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { PingbackForm } from './components/ping';
+import { fields } from './utils/fields';
 
 function App() {
+  
+  const handleSubmit = (data: { [key: string]: string }) => {
+    console.log('Form data submitted:', data);
+    alert('Form submitted successfully');
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <PingbackForm fields={fields} onSubmit={handleSubmit}/>
+    );
 }
 
 export default App;
