@@ -1,71 +1,98 @@
-import React, { useState } from 'react';
+import React, { FC } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import styles from "./styles.module.scss"
+import { TypeForm } from '../../interfaces';
+import { formatPhoneNumber } from '../../utils/functions';
 
-interface Field {
-  name: string;
-  type: string;
-  label: string;
-  required: boolean;
-  options?: string[];
-}
+export const PingbackForm: FC<TypeForm> = ({ fields, onSubmit, title, subtitle }) => {
+	const { register, handleSubmit, setValue, formState: { errors } } = useForm()
 
-interface FormProps {
-  fields: Field[];
-  onSubmit: (formData: { [key: string]: string }) => void;
-}
+	const onSubmitHandler: SubmitHandler<{ [key: string]: any }> = (data) => {
+		onSubmit(data);
+	};
 
-export const PingbackForm: React.FC<FormProps> = ({ fields, onSubmit }) => {
-  const [formData, setFormData] = useState<{ [key: string]: string }>({});
+	return (
+		<div className={styles.wrapper}>
+			<h1 className={styles.title}>{title}</h1>
+			<p className={styles.subtitle}>{subtitle}</p>
+			<form onSubmit={handleSubmit(onSubmitHandler)} className={styles.form}>
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+				{fields.map((item, key) => (
+					<div key={key}>
+						{item.type === 'select' ? (
+							<div className={styles.container}>
+								<select
+									id={item.name}
+									{...register(item.name, {
+										required: item.required ? `${item.label} is a required field!` : false,
+									})}
+									className={styles.input}
+								>
+									<option value="">Your role...</option>
+									{item.options?.map((option) => (
+										<option key={option} value={option}>
+											{option}
+										</option>
+									))}
+								</select>
+							</div>
+						) : item.type === 'textarea' ? (
+							<div className={styles.container}>
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
+								<textarea
+									id={item.name}
+									{...register(item.name, {
+										required: item.required ? `${item.label} is a required field!` : false,
+									})}
+									placeholder={item.label}
+									className={styles.textArea}
+								/>
+								<span className={styles.border}></span>
+							</div>
+						) : (
+							<div className={styles.container}>
+								<input
+									id={item.name}
+									type="text"
+									{...register(item.name, {
+										required: item.required ? `${item.label} is a required field!` : false, pattern: item.type === 'email'
+											? {
+												value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+												message: 'Invalid email format',
+											}
+											: item.type === 'tel'
+												? {
+													value: /^\(?\d{2}\)?[\s-]?[\d\s-]{8,9}$/,
+													message: 'Invalid phone format. Example: (31) 99999-9999',
+												}
+												: undefined,
+										...(item.type === 'tel' && {
+											onChange: (e) => {
+												const formattedValue = formatPhoneNumber(e.target.value);
+												setValue(item.name, formattedValue);
+											},
+										}),
 
-  return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: '600px', margin: '0 auto', padding: '1em', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
-      {fields.map((field) => (
-        <div key={field.name} style={{ marginBottom: '1em' }}>
-          <label htmlFor={field.name} style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.5em' }}>
-            {field.label} {field.required && '*'}
-          </label>
-          {field.type === 'select' ? (
-            <select
-              name={field.name}
-              required={field.required}
-              onChange={handleChange}
-              style={{ display: 'block', width: '100%', padding: '0.5em' }}
-            >
-              <option value="">Select...</option>
-              {field.options?.map((option) => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          ) : field.type === 'textarea' ? (
-            <textarea
-              name={field.name}
-              required={field.required}
-              onChange={handleChange}
-              style={{ display: 'block', width: '100%', padding: '0.5em', minHeight: '100px' }}
-            />
-          ) : (
-            <input
-              type={field.type}
-              name={field.name}
-              required={field.required}
-              onChange={handleChange}
-              style={{ display: 'block', width: '100%', padding: '0.5em' }}
-            />
-          )}
-        </div>
-      ))}
-      <button type="submit" style={{ padding: '0.75em 1.5em', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-        Submit
-      </button>
-    </form>
-  );
+									})}
+									placeholder={item.label}
+									className={styles.input}
+								/>
+								<span className={styles.border}></span>
+							</div>
+						)}
+						{errors[item.name] && (
+							<p className={styles.errorMessage}>
+								{errors[item.name]?.message as string}
+							</p>
+						)}
+					</div>
+				))}
+
+				<input type="submit" className={styles.submitButton} />
+			</form>
+		</div>
+	)
+
 };
+
+
