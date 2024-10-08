@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PingbackForm } from './components/ping';
+import { PingbackForm } from './components/form';
 import { fields } from './utils/fields';
 import styles from "./app.module.scss"
 

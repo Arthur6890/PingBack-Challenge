@@ -1,46 +1,48 @@
-# Getting Started with Create React App
+# Pingback Form Component
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project contains a reusable `PingbackForm` component located in the `components` folder within the `src` directory of the project. The form is built using **React Hook Form** and **TypeScript** to provide a robust and type-safe implementation for handling form submissions.
 
-## Available Scripts
+## Technologies Used
 
-In the project directory, you can run:
+- **React**: Core library for building user interfaces.
+- **React Hook Form**: For form state management, validation, and submission handling.
+- **TypeScript**: Type-safe implementation for React components.
+- **Sass**: For modular and scoped styling.
+- **Sass Modules**: Used for component-specific styles, allowing encapsulation and cleaner CSS structure.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Component Location
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- `src/components/form/index.tsx`
 
-### `npm test`
+The main component is stored in the `components` folder within the `src` directory. It is a flexible form component that can be configured to handle multiple types of form fields.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Validations
 
-### `npm run build`
+The `PingbackForm` component uses `react-hook-form` for validating form inputs. The current implementation includes the following validation types:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Required Fields**: 
+   - If a field is marked as required, the form will display an error message if left empty.
+   - Example: `Full Name is a required field!`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Email Validation**:
+   - The email field is validated to ensure it matches a standard email format.
+   - Error message: `Invalid email format.`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **Phone Number Validation**:
+   - The phone number field automatically formats the input to follow the Brazilian phone number format: `(XX) XXXXX-XXXX`.
+   - It only accepts numerical input and automatically formats as the user types.
+   - Error message if invalid: `Invalid phone number format. Example: (31) 99999-9999.`
 
-### `npm run eject`
+## Installation and Setup
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. **Clone the repository**:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```bash
+   git clone https://github.com/Arthur6890/PingBack-Challenge.git
+   cd pingBack-challenge
+   npm install (or yarn)
+   npm run start (or yarn start)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

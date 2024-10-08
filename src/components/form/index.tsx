@@ -63,7 +63,7 @@ export const PingbackForm: FC<TypeForm> = ({ fields, onSubmit, title, subtitle }
 											: item.type === 'tel'
 												? {
 													value: /^\(?\d{2}\)?[\s-]?[\d\s-]{8,9}$/,
-													message: 'Invalid phone format. Example: (31) 99999-9999',
+													message: 'Invalid phone number format. Example: (31) 99999-9999',
 												}
 												: undefined,
 										...(item.type === 'tel' && {
